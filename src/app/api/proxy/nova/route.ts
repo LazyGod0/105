@@ -20,13 +20,8 @@ export async function POST(req: Request) {
   }
 
   const response = await limiter.schedule(() =>
-    fetch(`${process.env.NEXT_PUBLIC_QWEN_DEEPBLUE_API}`, {
+    fetch(`${process.env.NEXT_PUBLIC_NOVA_LITE_API}`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.NEXT_PUBLIC_QWEN_DEEPBLUE_API_KEY}`,
-        "X-DashScope-SSE": "enable"
-      },
       body: JSON.stringify({
         input: inputPayload,
         parameters: {},

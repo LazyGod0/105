@@ -45,7 +45,7 @@ export const AppProvider: FC<AppProviderProps> = ({
   // Always default to lightBlue theme on every visit
   const [mode, setMode] = useState<PaletteMode>(initialMode || "dark");
   const [reload, setReload] = useState<boolean>(false);
-  const [model, setModel] = useState<string>("qwen");
+  const [model, setModel] = useState<string>("nova");
 
   const toggleTheme = () => {
     const newMode = mode === "light" ? "dark" : "light";

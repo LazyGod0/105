@@ -51,7 +51,7 @@ const NewChatPage: FC = () => {
   };
 
   const handleSendMessage = async () => {
-    if (model === "qwen") {
+    if (model === "nova") {
       // console.log("Hello");
       if (userMessage.trim() === "") return;
 
@@ -79,23 +79,26 @@ const NewChatPage: FC = () => {
       setUserMessage(""); // เคลียร์ช่อง input
 
       try {
-        const response = await fetch("/api/proxy/qwen", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            query: userMessage,
-            
-            parameters: {},
-            debug: {},
-          }),
-          signal,
-        });
+        const response = await fetch(
+          "https://vqxvrjmsbekov4pfe5i4leoytm0wkmht.lambda-url.us-east-1.on.aws/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              prompt: userMessage,
+
+              parameters: {},
+              debug: {},
+            }),
+            signal,
+          }
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch response");
         }
-        
+
         const reader = response.body!.getReader();
         const decoder = new TextDecoder();
         // let fullBotResponse = "";
@@ -110,28 +113,26 @@ const NewChatPage: FC = () => {
             const chunk = decoder.decode(value);
             const lines = chunk.split("\n");
             for (const line of lines) {
-              if (line.startsWith("data:")) {
-                const dataStr = line.slice(5).trim();
+              const dataStr = line.trim();
 
-                if (dataStr) {
-                  try {
-                    const event = JSON.parse(dataStr);
-                    if (event.output?.text) {
-                      const newText = event.output.text.slice(
-                        lastResponseRef.current.length
-                      );
-                      lastResponseRef.current = event.output.text;
-                      appendToLastBotMessage(newText);
-                      // fullBotResponse = event.output.text;
-                    }
-                    if (event.output?.finish_reason === "stop") {
-                      // console.log("response📦" + event.output.session_id);
-                      // await updateChatlog(fullBotResponse, event.output.session_id);
-                      controller.abort(); // end stream
-                    }
-                  } catch (e) {
-                    //console.error("Error parsing JSON:", e);
+              if (dataStr) {
+                try {
+                  const event = JSON.parse(dataStr);
+                  if (event.output?.text) {
+                    const newText = event.output.text.slice(
+                      lastResponseRef.current.length
+                    );
+                    lastResponseRef.current = event.output.text;
+                    appendToLastBotMessage(newText);
+                    // fullBotResponse = event.output.text;
                   }
+                  if (event.output?.finish_reason === "stop") {
+                    // console.log("response📦" + event.output.session_id);
+                    // await updateChatlog(fullBotResponse, event.output.session_id);
+                    controller.abort(); // end stream
+                  }
+                } catch (e) {
+                  //console.error("Error parsing JSON:", e);
                 }
               }
             }
@@ -183,7 +184,6 @@ const NewChatPage: FC = () => {
   //     }
   // }
 
-
   useEffect(() => {
     //setSessionId(uuidv4());
     //fetchSessions();
@@ -211,7 +211,7 @@ const NewChatPage: FC = () => {
                   component="img"
                   src={"/105-chat.png"}
                   sx={{
-                    width:250,
+                    width: 250,
                     borderRadius: 4,
                     // my: 1,
                   }}
@@ -237,7 +237,6 @@ const NewChatPage: FC = () => {
                   gap: 1,
                   "&::-webkit-scrollbar": {
                     width: "6px",
-                    
                   },
                   "&::-webkit-scrollbar-track": {
                     background: theme.palette.background.default,
@@ -245,7 +244,6 @@ const NewChatPage: FC = () => {
                   "&::-webkit-scrollbar-thumb": {
                     background: theme.palette.divider,
                     borderRadius: "3px",
-                    
                   },
                   "&::-webkit-scrollbar-thumb:hover": {
                     background: theme.palette.text.secondary,
@@ -270,8 +268,8 @@ const NewChatPage: FC = () => {
                     <Fragment key={index}>
                       <Box
                         sx={{
-                          mt : 4,
-                          mx : 2,
+                          mt: 4,
+                          mx: 2,
                           p: 2,
                           borderRadius: 4,
                           maxWidth: "70%",
@@ -281,8 +279,7 @@ const NewChatPage: FC = () => {
                               : "flex-end",
                           bgcolor:
                             message.type === sender.bot ? "" : "primary.main",
-                          color:
-                            "text.secondary"
+                          color: "text.secondary",
                         }}
                       >
                         <ReactMarkdown
