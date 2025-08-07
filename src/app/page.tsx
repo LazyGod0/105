@@ -38,7 +38,6 @@ const NewChatPage: FC = () => {
   //console.log("🚀 ~ messages:", messages)
   const [messagesState, setMessagesState] = useState<boolean>(false);
   const [userMessage, setUserMessage] = useState<string>("");
-  const [sessionId, setSessionId] = useState("");
   //console.log("🚀 ~ sessionId:", sessionId)
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
@@ -87,7 +86,7 @@ const NewChatPage: FC = () => {
           },
           body: JSON.stringify({
             query: userMessage,
-            sessionId: sessionId,
+            
             parameters: {},
             debug: {},
           }),
@@ -96,7 +95,7 @@ const NewChatPage: FC = () => {
         if (!response.ok) {
           throw new Error("Failed to fetch response");
         }
-
+        
         const reader = response.body!.getReader();
         const decoder = new TextDecoder();
         // let fullBotResponse = "";
@@ -113,6 +112,7 @@ const NewChatPage: FC = () => {
             for (const line of lines) {
               if (line.startsWith("data:")) {
                 const dataStr = line.slice(5).trim();
+
                 if (dataStr) {
                   try {
                     const event = JSON.parse(dataStr);
@@ -125,9 +125,6 @@ const NewChatPage: FC = () => {
                       // fullBotResponse = event.output.text;
                     }
                     if (event.output?.finish_reason === "stop") {
-                      if (sessionId === "" && event.output?.session_id) {
-                        setSessionId(event.output.session_id);
-                      }
                       // console.log("response📦" + event.output.session_id);
                       // await updateChatlog(fullBotResponse, event.output.session_id);
                       controller.abort(); // end stream
@@ -212,7 +209,7 @@ const NewChatPage: FC = () => {
               <Fragment>
                 <Box
                   component="img"
-                  src={"/harmony-ai-logo.png"}
+                  src={"/105-chat.png"}
                   sx={{
                     width:250,
                     borderRadius: 4,
@@ -303,43 +300,6 @@ const NewChatPage: FC = () => {
                           {message.text}
                         </ReactMarkdown>
                       </Box>
-                      {/* {message.type === "bot" && (
-                          <Box display="flex" flexDirection="row" alignItems="center">
-                            {!message.correct && message.correct !== false && (
-                              <Fragment>
-                                <Button
-                                  color="success"
-                                  onClick={() => handleFeedback(message.text?.toString() ?? "", true)}
-                                >
-                                  <CheckIcon style={{ fontSize: 25 }} />
-                                </Button>
-                                <Button color="error" onClick={() => handleFeedback(message.text?.toString() ?? "", false)}>
-                                  <ClearIcon style={{ fontSize: 25 }} />
-                                </Button>
-                                <Typography sx={{ color: "GrayText", fontSize: 15, ml: 2 }}>
-                                  Is this the answer you want?
-                                </Typography>
-                              </Fragment>
-                            )}
-                            {message.correct === true && (
-                              <Fragment>
-                                <CheckIcon color="success" style={{ fontSize: 25 }} sx={{ ml: 1 }} />
-                                <Typography sx={{ color: "GrayText", fontSize: 15, ml: 2 }}>
-                                  Thank you for your feedback
-                                </Typography>
-                              </Fragment>
-                            )}
-                            {message.correct === false && (
-                              <Fragment>
-                                <ClearIcon color="error" style={{ fontSize: 25 }} sx={{ ml: 1 }} />
-                                <Typography sx={{ color: "GrayText", fontSize: 15, ml: 2 }}>
-                                  Thank you for your feedback
-                                </Typography>
-                              </Fragment>
-                            )}
-                          </Box>
-                        )} */}
-
                       <div ref={messagesEndRef} />
                     </Fragment>
                   )
@@ -401,7 +361,7 @@ const NewChatPage: FC = () => {
             </Box>
             {messages.length != 0 && (
               <Typography variant="subtitle2" sx={{ mt: 2 }}>
-                Harmony AI is a mental health companion for tough times — this is just a demo version.
+                105 Chat can make mistakes.
               </Typography>
             )}
           </Stack>

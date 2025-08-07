@@ -54,6 +54,7 @@ export async function POST(req: Request) {
         if (done) break;
 
         const chunk = decoder.decode(value, { stream: true });
+        
         const lines = chunk.split("\n");
 
         for (const line of lines) {

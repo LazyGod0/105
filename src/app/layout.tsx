@@ -20,12 +20,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Harmony AI",
-  description: "Mental Health Counselling System",
+  title: "105-Chat",
+  description: "",
   icons: {
-    icon: "/harmony-ai-logo.png",
-    shortcut: "/harmony-ai-logo.png",
-    apple: "/harmony-ai-logo.png",
+    icon: "/105-chat.png",
   },
 };
 

@@ -102,7 +102,7 @@ const AppNavBar: FC = () => {
           // onClick={handleClick}
           sx={(theme) => ({
             px: 2,
-            py: 1,
+            py: 0.5,
             my: 0.3,
             borderRadius: 2,
             // cursor: "pointer",
@@ -116,10 +116,7 @@ const AppNavBar: FC = () => {
           <Stack direction="row" alignItems="center" spacing={1}>
             <Box>
               <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
-                <Image src={'/harmony-ai-logo.png'} alt="harmony-ai" width={50} height={50}/>
-                <Typography variant="subtitle1" fontWeight="medium">
-                  Harmony AI
-                </Typography>
+                <Image src={'/105-chat.png'} alt="harmony-ai" width={75} height={75}/>
               </Box>
               {/* {modelList.map((m) => {
                 if (m.value === model) {
@@ -214,60 +211,6 @@ const AppNavBar: FC = () => {
             </Stack>
           )}
         </Box> */}
-        <Menu
-          anchorEl={anchorEl}
-          open={openModel}
-          onClose={handleClose}
-          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-          transformOrigin={{ vertical: "top", horizontal: "left" }}
-          slotProps={{
-            paper: {
-              sx: {
-                p: 1,
-                mt: 1,
-                borderRadius: 4,
-                width: 300,
-              },
-            },
-          }}
-        >
-          <Stack
-            direction="row"
-            sx={{ justifyContent: "space-between", mx: 2, mb: 1 }}
-          >
-            <Typography>Model</Typography>
-            <InfoOutlineIcon fontSize="small" />
-          </Stack>
-
-          {[{ label: "Qwen", value: "qwen", image: "/svg/qwen-color.svg" }].map(
-            (m) => (
-              <MenuItem
-                key={m.value}
-                onClick={(e) => handleSelect(m.value)}
-                selected={model === m.value}
-                sx={{
-                  borderRadius: 2,
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  my: 0.5,
-                }}
-              >
-                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                  <Box
-                    component="img"
-                    src={m.image}
-                    alt={m.label}
-                    sx={{ width: 25, height: 25 }}
-                  />
-                  <Typography variant="caption">{m.label}</Typography>
-                </Box>
-                {model === m.value && (
-                  <CheckCircleOutlineIcon fontSize="small" color="primary" />
-                )}
-              </MenuItem>
-            )
-          )}
-        </Menu>
       </Toolbar>
     </AppBar>
   );

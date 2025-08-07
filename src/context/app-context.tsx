@@ -43,7 +43,7 @@ export const AppProvider: FC<AppProviderProps> = ({
   initialMode,
 }) => {
   // Always default to lightBlue theme on every visit
-  const [mode, setMode] = useState<PaletteMode>(initialMode || "light");
+  const [mode, setMode] = useState<PaletteMode>(initialMode || "dark");
   const [reload, setReload] = useState<boolean>(false);
   const [model, setModel] = useState<string>("qwen");
 
@@ -70,11 +70,11 @@ const theme = useMemo(() => {
       palette: {
         mode: "dark", // Still use dark mode for proper contrast
         background: {
-          default: "#BFECFF", // Dark blue background
-          paper: "#E3F2FD",   // Much lighter blue for better text readability
+          default: "#0B192C", // Dark blue background
+          paper: "#000000",   // Much lighter blue for better text readability
         },
         text: {
-          primary: "#000000", // Changed to black
+          primary: "#FFFFFF", // Changed to black
           secondary: "#B0B0B0",
         },
         primary: {
